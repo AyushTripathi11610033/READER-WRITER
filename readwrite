@@ -1,0 +1,52 @@
+#include<stdio.h>
+#include<unistd.h>
+#include<pthread.h>
+#include<semaphore.h>
+sem_t read_block,write_block;
+int data=0,readers_count=0;
+int main()
+{
+	int r,w,i;
+	printf("Enter number of readers : \n");
+	scanf("%d",&r);	
+	printf("Enter number of writers : \n");
+        scanf("%d",&w);
+	printf("No. of Readers : %d \n",r);
+	printf("No. of Writers : %d \n",w);
+	pthread_t reader_thread[r],writer_thread[w];
+	sem_init(&read_block,0,1);
+	sem_init(&write_block,0,1);
+	
+	
+	for(i=0;i<w;i++)
+	{
+		pthread_create(&writer_thread[i],NULL,write,i);
+	}
+	
+
+
+	for(i=0;i<r;i++)
+	{
+		pthread_create(&reader_thread[i],NULL,read,i);	
+	}
+
+
+
+	for(i=0;i<w;i++)
+	{
+		pthread_join(writer_thread[i],NULL);
+	}
+
+
+	for(i=0;i<r;i++)
+	{
+		pthread_join(reader_thread[i],NULL);
+	}
+}
+
+void *read()
+{
+}
+void *write
+{}
+
